@@ -11,15 +11,15 @@ let
     {
       src = ../.;
 
-      shell.withHoogle = false;
+      shell.withHoogle = true;
 
       inputMap = {
         "https://input-output-hk.github.io/cardano-haskell-packages" = inputs.iogx.inputs.CHaP;
       };
 
-      name = "my-project";
+      name = "backend-onchain";
 
-      compiler-nix-name = lib.mkDefault "ghc8107";
+      compiler-nix-name = lib.mkDefault "ghc963";
 
       # flake.variants.profiled = {
       #   modules = [{ 
@@ -66,11 +66,13 @@ let
     #   sphinxToolchain = null;
     # };
 
-    # combinedHaddock = {
-    #   enable = false;
-    #   prologue = "";
-    #   packages = [];
-    # };
+    combinedHaddock = {
+      enable = true;
+      prologue = "";
+      packages = [
+        "cardano-api"
+      ];
+    };
   };
 
 in

@@ -57,12 +57,30 @@ extra-doc-files:    CHANGELOG.md
 common warnings
     ghc-options: -Wall
 
+common plutus-flags
+    ghc-options: 
+        -fno-ignore-interface-pragmas
+        -fno-omit-interface-pragmas
+        -fno-full-laziness
+        -fno-spec-constr
+        -fno-specialise
+        -fno-strictness
+        -fno-unbox-strict-fields
+        -fno-unbox-small-strict-fields
+        -fplugin-opt PlutusTx.Plugin:defer-errors
+        -fplugin-opt PlutusTx.Plugin:target-version=1.0.0
+
 library
     -- Import common warning flags.
-    import:           warnings
+    import:           
+        warnings
+        , plutus-flags
 
     -- Modules exported by the library.
-    exposed-modules:  MyLib
+    exposed-modules:  
+        Mint
+        , Escrow
+        , Util
 
     -- Modules included in this library but not exported.
     -- other-modules:
@@ -71,7 +89,15 @@ library
     -- other-extensions:
 
     -- Other library packages from which modules are imported.
-    build-depends:    base ^>=4.18.0.0
+    build-depends:    
+        base >=4.9 && <5
+        , base16-bytestring
+        , bytestring
+        , plutus-core
+        , plutus-ledger-api
+        , plutus-tx
+        , plutus-tx-plugin
+        , cardano-api
 
     -- Directories containing source files.
     hs-source-dirs:   src
@@ -81,7 +107,9 @@ library
 
 test-suite backend-onchain-test
     -- Import common warning flags.
-    import:           warnings
+    import:          
+        warnings
+        , plutus-flags
 
     -- Base language which the package is written in.
     default-language: Haskell2010
@@ -103,5 +131,68 @@ test-suite backend-onchain-test
 
     -- Test dependencies.
     build-depends:
-        base ^>=4.18.0.0,
-        backend-onchain
+        base >=4.9 && <5
+        , backend-onchain
+        , base16-bytestring
+        , bytestring
+        , plutus-core
+        , plutus-ledger-api
+        , plutus-tx
+        , plutus-tx-plugin
+
+executable backend-onchain-exe
+    -- Import common warning flags.
+    import:          
+        warnings
+        , plutus-flags
+
+    -- Base language which the package is written in.
+    default-language: Haskell2010
+
+    -- Modules included in this executable, other than Main.
+    -- other-modules:
+
+    -- LANGUAGE extensions used by modules in this package.
+    -- other-extensions:
+
+    -- The entrypoint to the executable.
+    main-is:          Main.hs
+
+    -- Directories containing source files.
+    hs-source-dirs:   app
+
+    -- Test dependencies.
+    build-depends:
+        base >=4.9 && <5
+        , backend-onchain
+        , base16-bytestring
+        , bytestring
+        , plutus-core
+        , plutus-ledger-api
+        , plutus-tx
+        , plutus-tx-plugin
+        , cardano-api
+
+    -- Executable name.
+    -- executable-name:
+
+    -- Extra files to be distributed with the executable.
+    -- extra-source-files:
+
+    -- Extra directories to be searched for files specified with extra-source-files.
+    -- extra-source-dirs:
+
+    -- Extra files to be copied into the build directory.
+    -- extra-tmp-files:
+
+    -- Extra directories to be searched for files specified with extra-tmp-files.
+    -- extra-tmp-files-dirs:
+
+    -- Extra files to be installed.
+    -- extra-doc-files:
+
+    -- Extra directories to be searched for files specified with extra-doc-files.
+    -- extra-doc-files-dirs:
+
+    -- Extra files to be distributed with the package, such as examples or a README.
+    -- extra-dist-files:

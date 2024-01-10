@@ -9,7 +9,9 @@ cabalProject:
 
   # welcomeMessage = null;
 
-  # packages = [];
+  packages = [
+    pkgs.zlib
+  ];
 
   # scripts = {};
 
