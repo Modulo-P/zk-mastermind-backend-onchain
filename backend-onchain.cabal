@@ -166,6 +166,8 @@ executable backend-onchain-exe
         base >=4.9 && <5
         , backend-onchain
         , base16-bytestring
+        , text
+        , hex-text
         , bytestring
         , plutus-core
         , plutus-ledger-api

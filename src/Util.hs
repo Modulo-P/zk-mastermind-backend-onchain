@@ -1,23 +1,17 @@
-
-{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE TypeFamilies      #-}
+{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 module Util where
 
-import           Mint               (MintParams (MintParams), mintScript)
-import           PlutusLedgerApi.V2 (serialiseCompiledCode)
-import           PlutusTx
-import           Prelude            (IO, ($))
-import           System.IO          (print)
+import Mint (MintParams (MintParams), mintScript)
+import PlutusLedgerApi.V2 (PubKeyHash (..), serialiseCompiledCode)
+import PlutusTx
+import System.IO (print)
+import Prelude (IO, ($))
 
+compiledScript :: PubKeyHash -> CompiledCode (BuiltinData -> BuiltinData -> ())
+compiledScript pkh = mintScript $ MintParams pkh "HydrADA"
 
-
-params :: MintParams
-params = MintParams "b5b425aa8b18c537da26366fe4da1c709440daa7878ac25c63d89086" "HydrADA"
-
-compiledScript :: CompiledCode (BuiltinData -> BuiltinData -> ())
-compiledScript = mintScript params
-
-printValidator :: IO ()
-printValidator = print $ serialiseCompiledCode compiledScript
+printValidator :: PubKeyHash -> IO ()
+printValidator pkh = print $ serialiseCompiledCode $ compiledScript pkh
